@@ -1,0 +1,6 @@
+javac TestJNI.java
+javah -jni TestJNI
+gcc -c -I"/home/alain/JAVA/jdk1.8.0_131/include" -I"/home/alain/JAVA/jdk1.8.0_131/include/linux" -o myLIB.o myLIB.c
+# WARNING the library name must start with "lib"
+gcc -shared -o libmyLIB.so myLIB.o
+

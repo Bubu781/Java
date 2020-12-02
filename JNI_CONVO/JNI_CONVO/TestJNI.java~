@@ -1,0 +1,22 @@
+
+class TestJNI {
+	public native double[] sum(int arg1[], int arg2[]);
+
+	static {
+		// the file name must be "libmyLIB.so"
+		System.loadLibrary("myLIB");
+//		System.load("/home/alain/ALAIN/TestLecture/JAVA_TESTS/JNI/myLIB.so");
+	}
+
+	public static void main(String[] args) {
+		int arg1[]={1,2,3,4};
+		int arg2[]=new int[4];
+
+		// print the java library path
+		String property = System.getProperty("java.library.path");
+		System.out.println("java.library.path="+property);
+
+		TestJNI tjni=new TestJNI();
+		//System.out.println(arg1+" + "+arg2+" = "+tjni.addArgs(arg1,arg2));
+	}
+}

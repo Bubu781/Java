@@ -1,0 +1,39 @@
+#include <jni.h>
+#include <stdio.h>
+#include <malloc.h>
+#include "TestJNI.h"
+
+JNIEXPORT jdoubleArray JNICALL
+Java_TestJNI_sum(JNIEnv *env, jobject obj, jintArray javaIntArrayArg1, jintArray javaIntArrayArg2) {
+	int  i;
+	// Convert the Java Int Array into C int Array
+	jint *cIntArrayArg1=(*env)->GetIntArrayElements(env, javaIntArrayArg1, NULL);
+	jint *cIntArrayArg2=(*env)->GetIntArrayElements(env, javaIntArrayArg2, NULL);
+
+	// check input argument validity
+	if(cIntArrayArg1==NULL) return NULL;
+	if(cIntArrayArg2==NULL) return NULL;
+	jsize size1=(*env)->GetArrayLength(env, javaIntArrayArg1);
+	jsize size2=(*env)->GetArrayLength(env, javaIntArrayArg2);
+	if(size1!=size2) return NULL;
+
+	// create C result Array
+	jdouble *cDoubleArrayResult=malloc(sizeof(jdouble)*size1);
+	if(cDoubleArrayResult==NULL) return NULL;
+
+	// perform operation
+	for(i=0; i<size1; i++) cDoubleArrayResult[i]=(jdouble)cIntArrayArg1[i]+cIntArrayArg2[i];
+
+	// Release resources
+	(*env)->ReleaseIntArrayElements(env, javaIntArrayArg1, cIntArrayArg1);
+	(*env)->ReleaseIntArrayElements(env, javaIntArrayArg2, cIntArrayArg2);
+
+	// create Java result Array
+	jdoubleArray javaDoubleArrayResult=(*env)->NewDoubleArray(env,size1);
+	if(javaDoubleArrayResult==NULL) return NULL;
+
+	// Copy C result array into Java result Array
+	(*env)->SetDoubleArrayRegion(env, javaDoubleArrayResult, 0, size1, cDoubleArrayResult);
+
+	return javaDoubleArrayResult;
+}
