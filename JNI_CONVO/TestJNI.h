@@ -7,6 +7,10 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#undef TestJNI_SIGTAB_SIZE
+#define TestJNI_SIGTAB_SIZE 1000000L
+#undef TestJNI_MASKTAB_SIZE
+#define TestJNI_MASKTAB_SIZE 1024L
 /*
  * Class:     TestJNI
  * Method:    convo
